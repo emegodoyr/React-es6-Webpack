@@ -16,7 +16,7 @@ class App extends Component {
       cuando se crea el componente llamo al metodo videoSearch
       envio el string para buscar un video inicial por defecto
     */
-    this.videoSearch('major lazer');
+    this.videoSearch('node js');
   }
 
   /*
@@ -31,25 +31,34 @@ class App extends Component {
 
   videoSearch(term) {
     YTSearch({key: API_KEY, term: term}, (videos) => {
+      console.log(videos);
       this.setState({ videos: videos, selectedVideo: videos[0]
       });
     });
   }
 
   /*
+    (SearchBar)
     envío el metodo {videoSearch} al componente SearchBar
     desde este componente lo puedo usar como this.props.onSearchTermChange(term);
 
-    envío el atributo del state {selectedVideo} al componente VideoDetail
-    desde este componente lo puedo usar como {video}
+    (VideoDetail)
+    envío el atributo del state {selectedVideo} al componente VideoDetail,
+    desde VideoDetail lo puedo usar como una props {video}
 
+   (VideoList)
    uso arrow function es6 para enviar una funcion que recibirá como parametro el video seleccionado {selectedVideo}
-   y cambiar el state this.setState({selectedVideo} con la nueva seleccion desde el componente VideoList
+   y cambia el state this.setState({selectedVideo} con la nueva seleccion desde el componente VideoList.
    Tambien envío todos los videos cargados en el atributo videos [] del state
+
+   const videoSearch = _.debounce((term) => { this.videoSearch(term) }, 250);
+   la funcion anterior se dispara cada cuarto de segundo mas rapido en vez de ser disparada
+   en el instante en que se hace click (controlamos la velocidad mediante el segundo parametro)
+
   */
 
   render() {
-    const videoSearch = _.debounce((term) => { this.videoSearch(term) }, 300);
+    const videoSearch = _.debounce((term) => { this.videoSearch(term) }, 250);
 
     return (
       <div>
